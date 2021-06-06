@@ -59,11 +59,11 @@ input[type=number] {
 .c-tabHeading.c-tabActive{
     opacity: 1;
 }
-.c-displayWrap{
+.c-displayWrap, .c-card{
     background-color: #212121;
     box-shadow: 10px 10px 20px #00000020;
 }
-.c-submit-btn{
+.c-btn{
     font-family: 'Poppins', sans-serif;
     background-image: linear-gradient(90deg, #42E695, #3BB2B8);
     background-color: #42E695;
@@ -75,10 +75,10 @@ input[type=number] {
     border: none;
     transition: 0.4s ease-in-out;
 }
-.c-submit-btn:hover{
+.c-btn:hover{
     background-image: linear-gradient(90deg, #42E695, #42E695, #3BB2B8);
 }
-.c-submit-btn::after{
+.c-btn::after{
     content: "";
     display: inline-block;
     height: 100%;
@@ -91,7 +91,7 @@ input[type=number] {
     z-index: -1;
     transition: all .5s;
 }
-.c-submit-btn:hover::after {
+.c-btn:hover::after {
     transform: scaleX(1.2) scaleY(1.4);
     opacity: 0;
 }

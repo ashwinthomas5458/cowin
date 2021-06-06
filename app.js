@@ -6,6 +6,20 @@ function runAll() {
     let currentTab = 0;
     let dates = [];
     let states = [];
+    let loopId = "";
+
+    const allowNotification =()=>{
+      const notificationBtn = document.querySelector('.c-notification-btn');
+
+      notificationBtn.addEventListener('click', ()=>{
+        if (("Notification" in window) && Notification.permission != "granted") {
+          Notification.requestPermission();
+        }
+        else if(!("Notification" in window)){
+          alert("Browser does not support notification");
+        }
+      })
+    }
 
     const setDateItems = () => {
         const dateSelector = document.querySelector("#date-selector");
@@ -100,7 +114,14 @@ function runAll() {
                 const pin = document.querySelector('#pin-code');
                 let date = dates[dateSelector.value];
                 if (pin.value && pin.value > 99999) {
+                  if (Notification.permission==="granted"){
+                    loopId = setInterval(() => {
+                      pinWise(pin.value, date, dose.value);
+                    }, 15000);
+                  }
+                  else{
                     pinWise(pin.value, date, dose.value);
+                  }
                     dataContainer.innerHTML = `<div class="col-lg-12 py-5 mt-3">
                 <div class="container py-5 d-flex justify-content-center flex-column align-items-center">
                   <img class="c-loader" src="images/loader.gif" alt="loader">
@@ -112,7 +133,14 @@ function runAll() {
                 const districtsSelector = document.querySelector("#district-selector");
                 let date = dates[dateSelector.value];
                 if (districtsSelector.value) {
+                  if (Notification.permission==="granted"){
+                    loopId = setInterval(() => {
+                      distWise(districtsSelector.value, date, dose.value);
+                    }, 15000);;
+                  }
+                  else{
                     distWise(districtsSelector.value, date, dose.value);
+                  }
                     dataContainer.innerHTML = `<div class="col-lg-12 py-5 mt-3">
                     <div class="container py-5 d-flex justify-content-center flex-column align-items-center">
                     <img class="c-loader" src="images/loader.gif" alt="loader">
@@ -170,6 +198,8 @@ function runAll() {
                 </div>`
             )).join("")}`;
             cowinRedirect();
+            notify("Vaccination slot available", "Vaccination slot is available for the selected search options.");
+            if(loopId) clearInterval(loopId);
         }
         else {
             dataContainer.innerHTML = `<div class="col-lg-12 py-5">
@@ -190,9 +220,22 @@ function runAll() {
         })
     }
 
+    const notify=(title, body)=>{
+      let options = {
+        body: body
+      }
+      if (Notification.permission === "granted") {
+        let notification = new Notification(title,options);
+        // setTimeout(() => {
+        //     notification.close();
+        // }, 5000);
+      }
+    }
+
     function tabChange(tab) {
         if (currentTab != tab) {
             currentTab = tab;
+            if(loopId) clearInterval(loopId);
             const tabWrapper = document.querySelector('.c-tab-content');
             tabHeadings[tab].classList.add('c-tabActive');
             if (tab === 0) {
@@ -225,7 +268,7 @@ function runAll() {
                   <div class="col-lg-6 pt-4 pt-lg-0">
                     <div class="d-flex container px-0 justify-content-end pt-3">
                       <div class="d-flex position-relative">
-                        <button class="c-submit-btn" type="submit" data-param="pin">Search</button>
+                        <button class="c-btn c-submit-btn" type="submit" data-param="pin">Search</button>
                       </div>
                     </div>
                   </div>
@@ -276,7 +319,7 @@ function runAll() {
                   <div class="col-lg-12 pt-4">
                     <div class="d-flex container px-0 justify-content-end">
                       <div class="d-flex position-relative">
-                        <button class="c-submit-btn" type="submit" data-param="district">Search</button>
+                        <button class="c-btn c-submit-btn" type="submit" data-param="district">Search</button>
                       </div>
                     </div>
                   </div>
@@ -286,9 +329,9 @@ function runAll() {
                 <div class="row c-data-container">
                 </div>
               </div>`
+              setLocations();
             }
             setDateItems();
-            setLocations();
             searchListener();
         }
         else {
@@ -299,4 +342,5 @@ function runAll() {
     setDateItems();
     getLocations();
     searchListener();
+    allowNotification();
 }
