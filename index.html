@@ -6,6 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vaccinne Check</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -14,93 +17,60 @@
   <div class="container-fluid px-0">
     <div class="container-fluid">
       <div class="container py-5">
-        <h2 class="py-4 mb-5 text-center fw-bolder">Search Availability</h2>
-        <ul class="c-tabs nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-              role="tab" aria-controls="home" aria-selected="true">Transfer</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-              role="tab" aria-controls="profile" aria-selected="false">Swap</button>
-          </li>
-        </ul>
+        <h1 class="py-4 mb-5 fw-bolder">Search Availability</h1>
+        <div class="d-flex pt-5">
+          <h5 class="c-tabHeading fw-bold text-uppercase c-tabActive" data-tab-value="0">Search by PIN</h5>
+          <h5 class="c-tabHeading fw-bold text-uppercase mx-4" data-tab-value="1">Search by District</h5>
+        </div>
       </div>
     </div>
     <div class="container-fluid">
       <div class="container">
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
-            <form>
+        <div class="c-tab-content">
+          <form>
             <div class="row pt-5">
               <div class="col-lg-6">
-                  <div class="c-inputWrap form-group position-relative">
-                    <label for="phone" class="position-absolute">PIN code</label>
-                    <input type="number"  id="phone" >
-                  </div>
+                <div class="c-inputWrap position-relative overflow-hidden">
+                  <input type="number" name="pin-code" placeholder="PIN Code" id="pin-code" required>
+                  <span class="c-bottom-border position-absolute d-block"></span>
+                </div>
               </div>
-              <div class="col-lg-6">
-                <select class="form-select c-select" aria-label="State">
-                  <option selected>Dose</option>
-                  <option value="1">Dose 1</option>
-                  <option value="2">Dose 2</option>
-                </select>
+              <div class="col-lg-6 pt-4 pt-lg-0">
+                <div class="container px-0 overflow-hidden position-relative">
+                  <select class="form-select c-select" aria-label="State" id="dose-type">
+                    <option value="1">Dose 1</option>
+                    <option value="2">Dose 2</option>
+                  </select>
+                  <span class="c-bottom-border position-absolute d-block"></span>
+                </div>
               </div>
-              <div class="col-12 pt-3 pt-lg-0">
+              <div class="col-lg-6 pt-4">
+                <div class="container px-0 overflow-hidden position-relative">
+                  <select class="form-select c-select" aria-label="State" id="date-selector">
+                    <option value="1">Date</option>
+                  </select>
+                  <span class="c-bottom-border position-absolute d-block"></span>
+                </div>
+              </div>
+              <div class="col-lg-6 pt-4 pt-lg-0">
                 <div class="d-flex container px-0 justify-content-end pt-3">
-                  <button class="c-btn btn btn-primary btn-lg">Search</button>
+                  <div class="d-flex position-relative">
+                    <button class="c-submit-btn" type="submit" data-param="pin">Search</button>
+                  </div>
                 </div>
               </div>
             </div>
           </form>
           <div class="container px-0 pt-5">
-            <div class="row">
-              <div class="col-xl-3 col-lg-4 col-md-2 col-12">
-                <div class="container e-displayWrap p-5 shadow">
-                  <h3 class="fw-bold test-uppercase">Amala Hospital</h3>
-                  <p class="test-uppercase">AMALA INSTITUTE OF MEDICAL SCIENCESAMALA NAGARTHRISSUR</p>
-                  <p class="fw-bold test-uppercase">Doses left: <span class="ml-3 fw-light test-uppercase">1</span></p>
-                  <p class="fw-bold test-uppercase">Fee: <span class="ml-3 fw-light test-uppercase">850</span></p>
-                  <p class="fw-bold test-uppercase">Min Age limit: <span class="ml-3 fw-light test-uppercase">45</span></p>
-                  <p class="fw-bold test-uppercase">Vaccine: <span class="ml-3 fw-light test-uppercase">COVISHIELD</span></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="row pt-5">
-              <div class="col-lg-6">
-                <select class="form-select c-select" aria-label="State">
-                  <option selected>State</option>
-                </select>
-              </div>
-              <div class="col-lg-6 pt-3 pt-lg-0">
-                <select class="form-select c-select" aria-label="District">
-                  <option selected>District</option>
-                </select>
-              </div>
-              <div class="col-lg-6 pt-3">
-                <select class="form-select c-select" aria-label="State">
-                  <option selected>Dose</option>
-                  <option value="1">Dose 1</option>
-                  <option value="2">Dose 2</option>
-                </select>
-              </div>
-              <div class="col-lg-6 pt-3">
-                <div class="d-flex container px-0 justify-content-end">
-                  <button class="c-btn btn btn-primary btn-lg">Search</button>
-                </div>
-              </div>
+            <div class="row c-data-container">
+              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
-    integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
-    crossorigin="anonymous"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>

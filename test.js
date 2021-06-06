@@ -1,12 +1,13 @@
 const fetch = require("node-fetch");
 
-const pin = "678683";
+// const pin = "678683";
+const pin = "560100";
 const date = "05-06-2021"
 
 const check = async ()=>{
     pinWise();
-    distWise(308, "Palakkad");
-    distWise(303, "Thrissur");
+    // distWise(308, "Palakkad");
+    // distWise(303, "Thrissur");
 }
 
 
