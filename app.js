@@ -109,6 +109,7 @@ function runAll() {
             e.preventDefault();
             const dateSelector = document.querySelector("#date-selector");
             const dose = document.querySelector('#dose-type');
+            const ageSelector = document.querySelector("#age-selector");
             const dataContainer = document.querySelector('.c-data-container');
             if (e.target.dataset.param === "pin") {
                 const pin = document.querySelector('#pin-code');
@@ -116,11 +117,11 @@ function runAll() {
                 if (pin.value && pin.value > 99999) {
                   if (Notification.permission==="granted"){
                     loopId = setInterval(() => {
-                      pinWise(pin.value, date, dose.value);
+                      pinWise(pin.value, date, dose.value, ageSelector.value);
                     }, 15000);
                   }
                   else{
-                    pinWise(pin.value, date, dose.value);
+                    pinWise(pin.value, date, dose.value, ageSelector.value);
                   }
                     dataContainer.innerHTML = `<div class="col-lg-12 py-5 mt-3">
                 <div class="container py-5 d-flex justify-content-center flex-column align-items-center">
@@ -135,11 +136,11 @@ function runAll() {
                 if (districtsSelector.value) {
                   if (Notification.permission==="granted"){
                     loopId = setInterval(() => {
-                      distWise(districtsSelector.value, date, dose.value);
+                      distWise(districtsSelector.value, date, dose.value, ageSelector.value);
                     }, 15000);;
                   }
                   else{
-                    distWise(districtsSelector.value, date, dose.value);
+                    distWise(districtsSelector.value, date, dose.value, ageSelector.value);
                   }
                     dataContainer.innerHTML = `<div class="col-lg-12 py-5 mt-3">
                     <div class="container py-5 d-flex justify-content-center flex-column align-items-center">
@@ -151,7 +152,7 @@ function runAll() {
         });
     }
 
-    const pinWise = async (pin, date, dose) => {
+    const pinWise = async (pin, date, dose, age) => {
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -159,11 +160,11 @@ function runAll() {
 
         await fetch(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${date}`, requestOptions)
             .then(response => response.text())
-            .then(result => sortItems(result, "PIN-Wise", dose))
+            .then(result => sortItems(result, "PIN-Wise", dose, age))
             .catch(error => console.log('error', error));
     }
 
-    const distWise = async (id, date, dose) => {
+    const distWise = async (id, date, dose, age) => {
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'
@@ -171,16 +172,21 @@ function runAll() {
 
         await fetch(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${id}&date=${date}`, requestOptions)
             .then(response => response.text())
-            .then(result => sortItems(result, "DIST-Wise", dose))
+            .then(result => sortItems(result, "DIST-Wise", dose, age))
             .catch(error => console.log('error', error));
     }
 
-    const sortItems = async (result, type, dose) => {
+    const sortItems = async (result, type, dose, age) => {
         let data = await JSON.parse(result);
         let results = [];
         if (data.sessions) {
             await data.sessions.forEach(element => {
-                if (element[`available_capacity_dose${dose}`]) results.push({ loc: element.name, address: element.address, number: element.available_capacity_dose1, fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
+                if(age){
+                  if (element[`available_capacity_dose${dose}`] && ((element.min_age_limit==18 && age==18)||(age==45))) results.push({ loc: element.name, address: element.address, number: element.available_capacity_dose1, fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
+                }
+                else{
+                  if (element[`available_capacity_dose${dose}`]) results.push({ loc: element.name, address: element.address, number: element.available_capacity_dose1, fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
+                }
             });
         }
         const dataContainer = document.querySelector('.c-data-container');
@@ -205,7 +211,7 @@ function runAll() {
             dataContainer.innerHTML = `<div class="col-lg-12 py-5">
             <div class="container py-5 d-flex justify-content-center flex-column align-items-center">
               <img class="c-no-data" src="images/noData.svg" alt="No Data">
-              <h6 class="fw-bold mt-3 text-muted">Nothing found!</h6>
+              <h6 class="fw-bold mt-3 text-muted">All slots full or no slots available in this location!</h6>
             </div>
           </div>`;
         }
@@ -265,7 +271,17 @@ function runAll() {
                       <span class="c-bottom-border position-absolute d-block"></span>
                     </div>
                   </div>
-                  <div class="col-lg-6 pt-4 pt-lg-0">
+                  <div class="col-lg-6 pt-4">
+                    <div class="container px-0 overflow-hidden position-relative">
+                      <select class="form-select c-select" aria-label="State" id="age-selector">
+                        <option >Minimum age limit</option>
+                        <option value="18">18</option>
+                        <option value="45">45</option>
+                      </select>
+                      <span class="c-bottom-border position-absolute d-block"></span>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 pt-4 pt-lg-0">
                     <div class="d-flex container px-0 justify-content-end pt-3">
                       <div class="d-flex position-relative">
                         <button class="c-btn c-submit-btn" type="submit" data-param="pin">Search</button>
@@ -316,7 +332,17 @@ function runAll() {
                       <span class="c-bottom-border position-absolute d-block"></span>
                     </div>
                   </div>
-                  <div class="col-lg-12 pt-4">
+                  <div class="col-lg-6 pt-4">
+                    <div class="container px-0 overflow-hidden position-relative">
+                      <select class="form-select c-select" aria-label="State" id="age-selector">
+                        <option >Minimum age limit</option>
+                        <option value="18">18</option>
+                        <option value="45">45</option>
+                      </select>
+                      <span class="c-bottom-border position-absolute d-block"></span>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 pt-4 pt-lg-3">
                     <div class="d-flex container px-0 justify-content-end">
                       <div class="d-flex position-relative">
                         <button class="c-btn c-submit-btn" type="submit" data-param="district">Search</button>
