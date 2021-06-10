@@ -181,11 +181,11 @@ function runAll() {
         let results = [];
         if (data.sessions) {
             await data.sessions.forEach(element => {
-                if(age){
-                  if (element[`available_capacity_dose${dose}`] && ((element.min_age_limit==18 && age==18)||(age==45))) results.push({ loc: element.name, address: element.address, number: element.available_capacity_dose1, fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
+                if(age && age!="0"){
+                  if (element[`available_capacity_dose${dose}`] && ((element.min_age_limit==18 && age==18)||(element.min_age_limit!=18 && age==45))) results.push({ loc: element.name, address: element.address, number: element[`available_capacity_dose${dose}`], fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
                 }
                 else{
-                  if (element[`available_capacity_dose${dose}`]) results.push({ loc: element.name, address: element.address, number: element.available_capacity_dose1, fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
+                  if (element[`available_capacity_dose${dose}`]) results.push({ loc: element.name, address: element.address, number: element[`available_capacity_dose${dose}`], fee: element.fee, min_age_limit: element.min_age_limit, vaccine: element.vaccine })
                 }
             });
         }
@@ -274,7 +274,7 @@ function runAll() {
                   <div class="col-lg-6 pt-4">
                     <div class="container px-0 overflow-hidden position-relative">
                       <select class="form-select c-select" aria-label="State" id="age-selector">
-                        <option >Minimum age limit</option>
+                        <option value="0">Minimum age limit</option>
                         <option value="18">18</option>
                         <option value="45">45</option>
                       </select>
@@ -335,7 +335,7 @@ function runAll() {
                   <div class="col-lg-6 pt-4">
                     <div class="container px-0 overflow-hidden position-relative">
                       <select class="form-select c-select" aria-label="State" id="age-selector">
-                        <option >Minimum age limit</option>
+                        <option value="0">Minimum age limit</option>
                         <option value="18">18</option>
                         <option value="45">45</option>
                       </select>
